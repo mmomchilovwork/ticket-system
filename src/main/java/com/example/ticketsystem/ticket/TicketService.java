@@ -1,0 +1,60 @@
+package com.example.ticketsystem.ticket;
+
+import com.example.ticketsystem.venchile.Vehicle;
+import com.example.ticketsystem.venchile.VehicleService;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceContext;
+import java.time.Instant;
+import java.util.List;
+
+@Stateless
+public class TicketService {
+
+    @PersistenceContext(unitName = "ticketSystemPU")
+    private EntityManager em;
+
+    @Inject
+    private VehicleService vehicleService;
+
+    public Ticket issue(Long vehicleId, String passengerName) {
+        Vehicle vehicle = vehicleService.findById(vehicleId);
+        Ticket ticket = new Ticket(vehicle, passengerName, Instant.now());
+        em.persist(ticket);
+        return ticket;
+    }
+
+    public Ticket validate(String code) {
+        Ticket ticket = findByCode(code);
+        ticket.validate(Instant.now());
+        try {
+            em.flush();
+        } catch (OptimisticLockException e) {
+            throw new ConcurrentTicketUpdateException(code, e);
+        }
+        return ticket;
+    }
+
+    public Ticket findByCode(String code) {
+        List<Ticket> result = em.createQuery(
+                        "SELECT t FROM Ticket t JOIN FETCH t.vehicle WHERE t.code = :code", Ticket.class)
+                .setParameter("code", code)
+                .getResultList();
+        if (result.isEmpty()) {
+            throw new TicketNotFoundException(code);
+        }
+        return result.get(0);
+    }
+
+    public List<Ticket> listByVehicle(Long vehicleId) {
+        vehicleService.findById(vehicleId);
+        return em.createQuery(
+                        "SELECT t FROM Ticket t WHERE t.vehicle.id = :vehicleId ORDER BY t.issuedAt DESC", Ticket.class)
+                .setParameter("vehicleId", vehicleId)
+                .getResultList();
+    }
+
+}

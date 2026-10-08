@@ -14,7 +14,8 @@ import javax.validation.constraints.Size;
 public class Vehicle {
 
     @Id
-    //TODO add generation strategy
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehicle_seq")
+    @SequenceGenerator(name = "vehicle_seq", sequenceName = "vehicle_seq", allocationSize = 50)
     private Long id;
 
     @NotBlank

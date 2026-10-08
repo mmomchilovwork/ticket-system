@@ -15,6 +15,8 @@ import java.util.UUID;
         indexes = @Index(name = "idx_ticket_vehicle", columnList = "vehicle_id"))
 public class Ticket {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_seq")
+    @SequenceGenerator(name = "ticket_seq", sequenceName = "ticket_seq", allocationSize = 50)
     private Long id;
 
 
