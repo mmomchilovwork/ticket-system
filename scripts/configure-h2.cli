@@ -1,0 +1,10 @@
+# H2 datasource for local development
+data-source add --name=TicketSystemDS \
+    --jndi-name=java:jboss/datasources/TicketSystemDS \
+    --driver-name=h2 \
+    --connection-url="jdbc:h2:mem:ticketsystem;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" \
+    --user-name=sa \
+    --password=sa
+
+# Log SQL statements to server.log (not to stdout)
+/subsystem=logging/logger=org.hibernate.SQL:add(level=DEBUG)
