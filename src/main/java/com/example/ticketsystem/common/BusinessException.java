@@ -3,7 +3,7 @@ package com.example.ticketsystem.common;
 import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true, inherited = true)
-public class BusinessException extends RuntimeException{
+public abstract class BusinessException extends RuntimeException{
 
     protected BusinessException(String message) {
         super(message);

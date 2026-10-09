@@ -1,8 +1,8 @@
 package com.example.ticketsystem.ticket;
 
-import com.example.ticketsystem.common.BusinessException;
+import com.example.ticketsystem.common.ConflictException;
 
-public class ConcurrentTicketUpdateException extends BusinessException {
+public class ConcurrentTicketUpdateException extends ConflictException {
 
 
     protected ConcurrentTicketUpdateException(String code, Throwable cause) {
