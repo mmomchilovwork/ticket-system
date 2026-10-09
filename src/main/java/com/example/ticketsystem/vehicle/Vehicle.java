@@ -5,6 +5,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 @Table(name = "vehicle",
@@ -61,5 +62,15 @@ public class Vehicle {
         return capacity;
     }
 
-    //TODO override hashCode and equals to use registration number ?
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vehicle)) return false;
+        return Objects.equals(registrationNumber, ((Vehicle) o).registrationNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(registrationNumber);
+    }
 }

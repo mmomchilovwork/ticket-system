@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 
@@ -26,10 +27,13 @@ public class TicketService {
     @Inject
     private VehicleService vehicleService;
 
+    @Inject
+    private Clock clock;
+
     @Timed(name = "tickets.issue", absolute = true, description = "Ticket issuing")
     public Ticket issue(Long vehicleId, String passengerName) {
         Vehicle vehicle = vehicleService.findById(vehicleId);
-        Ticket ticket = new Ticket(vehicle, passengerName, Instant.now());
+        Ticket ticket = new Ticket(vehicle, passengerName, Instant.now(clock));
         em.persist(ticket);
         LOG.info("Ticket issued: code={}, vehicleId={}", ticket.getCode(), vehicleId);
         return ticket;
@@ -38,7 +42,7 @@ public class TicketService {
     @Timed(name = "tickets.validate", absolute = true, description = "Ticket validation")
     public Ticket validate(String code) {
         Ticket ticket = findByCode(code);
-        ticket.validate(Instant.now());
+        ticket.validate(Instant.now(clock));
         try {
             em.flush();
         } catch (OptimisticLockException e) {

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -76,6 +77,16 @@ public class Ticket {
         validatedAt = now;
     }
 
-    //TODO override hashCode and equals to use the ticket code ?
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ticket)) return false;
+        return Objects.equals(code, ((Ticket) o).code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
 
 }
