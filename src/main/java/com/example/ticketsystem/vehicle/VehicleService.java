@@ -1,6 +1,7 @@
 package com.example.ticketsystem.vehicle;
 
 import com.example.ticketsystem.common.persistance.PersistenceErrors;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ public class VehicleService {
     @PersistenceContext(unitName = "ticketSystemPU")
     private EntityManager em;
 
+    @Timed(name = "vehicles.register", absolute = true, description = "Vehicle registration")
     public Vehicle register(String registrationNumber, VehicleType type, int capacity) {
         if (existsByRegistrationNumber(registrationNumber)) {
             throw new DuplicateRegistrationNumberException(registrationNumber);
@@ -44,6 +46,7 @@ public class VehicleService {
         return count > 0;
     }
 
+    @Timed(name = "vehicles.find", absolute = true, description = "Vehicle lookup by id")
     public Vehicle findById(Long id) {
         Vehicle vehicle = em.find(Vehicle.class, id);
         if (vehicle == null) {

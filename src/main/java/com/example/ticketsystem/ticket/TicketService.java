@@ -3,6 +3,7 @@ package com.example.ticketsystem.ticket;
 import com.example.ticketsystem.common.Page;
 import com.example.ticketsystem.vehicle.Vehicle;
 import com.example.ticketsystem.vehicle.VehicleService;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class TicketService {
     @Inject
     private VehicleService vehicleService;
 
+    @Timed(name = "tickets.issue", absolute = true, description = "Ticket issuing")
     public Ticket issue(Long vehicleId, String passengerName) {
         Vehicle vehicle = vehicleService.findById(vehicleId);
         Ticket ticket = new Ticket(vehicle, passengerName, Instant.now());
@@ -33,6 +35,7 @@ public class TicketService {
         return ticket;
     }
 
+    @Timed(name = "tickets.validate", absolute = true, description = "Ticket validation")
     public Ticket validate(String code) {
         Ticket ticket = findByCode(code);
         ticket.validate(Instant.now());
@@ -45,6 +48,7 @@ public class TicketService {
         return ticket;
     }
 
+    @Timed(name = "tickets.find", absolute = true, description = "Ticket lookup by code")
     public Ticket findByCode(String code) {
         List<Ticket> result = em.createQuery(
                         "SELECT t FROM Ticket t JOIN FETCH t.vehicle WHERE t.code = :code", Ticket.class)
@@ -56,6 +60,7 @@ public class TicketService {
         return result.get(0);
     }
 
+    @Timed(name = "tickets.list", absolute = true, description = "Ticket listing per vehicle")
     public Page<Ticket> listByVehicle(Long vehicleId, int page, int size) {
         vehicleService.findById(vehicleId);
         List<Ticket> items = em.createQuery(
