@@ -1,11 +1,16 @@
 package com.example.ticketsystem.vehicle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
 public class VehicleService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(VehicleService.class);
 
     @PersistenceContext(unitName = "ticketSystemPU")
     private EntityManager em;
@@ -16,6 +21,8 @@ public class VehicleService {
         }
         Vehicle vehicle = new Vehicle(registrationNumber, type, capacity);
         em.persist(vehicle);
+        LOG.info("Vehicle registered: id={}, registrationNumber={}, type={}",
+                vehicle.getId(), registrationNumber, type);
         return vehicle;
     }
 

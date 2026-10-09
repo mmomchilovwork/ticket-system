@@ -27,7 +27,8 @@ public class Vehicle {
     @Column(name = "type", nullable = false, length = 20)
     private VehicleType type;
 
-    @Size(min = 1)
+    @NotNull
+    @Min(1)
     @Column(name = "capacity", nullable = false)
     private int capacity;
 

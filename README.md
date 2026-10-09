@@ -31,13 +31,21 @@ WildFly 18 runs on Java 8 or 11 only. If a newer JDK is your default, set `JAVA_
 
 ### 2. Configure the server (once per WildFly installation)
 
-The application uses the datasource `java:jboss/datasources/TicketSystemDS`. Create it with the provided CLI script while the server is running:
+Run the provided CLI scripts while the server is running:
 
 ```
 <WILDFLY_HOME>/bin/jboss-cli.sh --connect --file=scripts/configure-h2.cli
+<WILDFLY_HOME>/bin/jboss-cli.sh --connect --file=scripts/configure-logging.cli
 ```
 
-On Windows use `jboss-cli.bat`. The script creates an in-memory H2 datasource and enables SQL logging to `standalone/log/server.log`.
+On Windows use `jboss-cli.bat`. No restart is needed.
+
+| Script | What it does |
+|---|---|
+| `configure-h2.cli` | Creates the in-memory H2 datasource `java:jboss/datasources/TicketSystemDS` and enables SQL logging (DEBUG) to `standalone/log/server.log` |
+| `configure-logging.cli` | Adds the request id to the log format, sets the application log level and silences client-error logging of the JSON-B provider |
+
+The scripts are meant for a fresh WildFly installation; running them a second time fails with "already exists".
 
 Verify the connection:
 

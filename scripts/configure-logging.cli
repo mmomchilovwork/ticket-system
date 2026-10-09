@@ -1,0 +1,9 @@
+# Add the request id (MDC) to every log line
+/subsystem=logging/pattern-formatter=PATTERN:write-attribute(name=pattern, value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] (%t) [req=%X{requestId}] %s%e%n")
+/subsystem=logging/pattern-formatter=COLOR-PATTERN:write-attribute(name=pattern, value="%K{level}%d{HH:mm:ss,SSS} %-5p [%c] (%t) [req=%X{requestId}] %s%e%n")
+
+# Application logger
+/subsystem=logging/logger=com.example.ticketsystem:add(level=INFO)
+
+# Yasson logs client input errors as SEVERE; the application handles and logs them itself
+/subsystem=logging/logger=org.eclipse.yasson:add(level=OFF)

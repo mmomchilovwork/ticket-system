@@ -2,6 +2,8 @@ package com.example.ticketsystem.ticket;
 
 import com.example.ticketsystem.vehicle.Vehicle;
 import com.example.ticketsystem.vehicle.VehicleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,6 +16,8 @@ import java.util.List;
 @Stateless
 public class TicketService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TicketService.class);
+
     @PersistenceContext(unitName = "ticketSystemPU")
     private EntityManager em;
 
@@ -24,6 +28,7 @@ public class TicketService {
         Vehicle vehicle = vehicleService.findById(vehicleId);
         Ticket ticket = new Ticket(vehicle, passengerName, Instant.now());
         em.persist(ticket);
+        LOG.info("Ticket issued: code={}, vehicleId={}", ticket.getCode(), vehicleId);
         return ticket;
     }
 
@@ -35,6 +40,7 @@ public class TicketService {
         } catch (OptimisticLockException e) {
             throw new ConcurrentTicketUpdateException(code, e);
         }
+        LOG.info("Ticket validated: code={}", code);
         return ticket;
     }
 
