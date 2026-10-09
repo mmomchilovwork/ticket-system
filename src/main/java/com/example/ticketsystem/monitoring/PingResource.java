@@ -1,5 +1,7 @@
 package com.example.ticketsystem.monitoring;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/ping")
 @RequestScoped
+@Hidden
 public class PingResource {
 
     @GET

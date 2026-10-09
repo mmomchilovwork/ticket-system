@@ -23,6 +23,12 @@
             <version>8.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.1.13</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>ticket-system</finalName>
@@ -33,12 +39,39 @@
                 <version>3.3.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <resource>
+                            <directory>${project.build.directory}/openapi</directory>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>2.0.2.Final</version>
+            </plugin>
+            <plugin>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>2.1.13</version>
+                <configuration>
+                    <outputPath>${project.build.directory}/openapi</outputPath>
+                    <outputFileName>openapi</outputFileName>
+                    <outputFormat>JSONANDYAML</outputFormat>
+                    <prettyPrint>true</prettyPrint>
+                    <resourcePackages>
+                        <package>com.example.ticketsystem</package>
+                    </resourcePackages>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>resolve</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

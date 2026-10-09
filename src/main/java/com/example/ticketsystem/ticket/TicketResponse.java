@@ -1,10 +1,14 @@
 package com.example.ticketsystem.ticket;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class TicketResponse {
     private String code;
     private String passengerName;
+    @Schema(format = "date-time", example = "2026-10-08T20:30:00.123Z")
     private String issuedAt;
     private boolean validated;
+    @Schema(format = "date-time", nullable = true)
     private String validatedAt;
     private Long vehicleId;
     private String vehicleRegistrationNumber;

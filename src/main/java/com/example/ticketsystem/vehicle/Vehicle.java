@@ -18,8 +18,7 @@ public class Vehicle {
     @SequenceGenerator(name = "vehicle_seq", sequenceName = "vehicle_seq", allocationSize = 50)
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
+    @Size(min = 1, max = 20)
     @Column(name = "registration_number", nullable = false, length = 20)
     private String registrationNumber;
 
@@ -28,7 +27,7 @@ public class Vehicle {
     @Column(name = "type", nullable = false, length = 20)
     private VehicleType type;
 
-    @Min(1)
+    @Size(min = 1)
     @Column(name = "capacity", nullable = false)
     private int capacity;
 
