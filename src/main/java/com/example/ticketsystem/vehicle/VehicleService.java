@@ -1,11 +1,13 @@
 package com.example.ticketsystem.vehicle;
 
+import com.example.ticketsystem.common.persistance.PersistenceErrors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 @Stateless
 public class VehicleService {
@@ -21,6 +23,14 @@ public class VehicleService {
         }
         Vehicle vehicle = new Vehicle(registrationNumber, type, capacity);
         em.persist(vehicle);
+        try {
+            em.flush();
+        } catch (PersistenceException e) {
+            if (PersistenceErrors.isUniqueViolation(e)) {
+                throw new DuplicateRegistrationNumberException(registrationNumber);
+            }
+            throw e;
+        }
         LOG.info("Vehicle registered: id={}, registrationNumber={}, type={}",
                 vehicle.getId(), registrationNumber, type);
         return vehicle;

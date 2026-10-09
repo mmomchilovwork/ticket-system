@@ -1,5 +1,6 @@
 package com.example.ticketsystem.ticket;
 
+import com.example.ticketsystem.common.Page;
 import com.example.ticketsystem.vehicle.Vehicle;
 import com.example.ticketsystem.vehicle.VehicleService;
 import org.slf4j.Logger;
@@ -55,12 +56,20 @@ public class TicketService {
         return result.get(0);
     }
 
-    public List<Ticket> listByVehicle(Long vehicleId) {
+    public Page<Ticket> listByVehicle(Long vehicleId, int page, int size) {
         vehicleService.findById(vehicleId);
-        return em.createQuery(
-                        "SELECT t FROM Ticket t WHERE t.vehicle.id = :vehicleId ORDER BY t.issuedAt DESC", Ticket.class)
+        List<Ticket> items = em.createQuery(
+                        "SELECT t FROM Ticket t WHERE t.vehicle.id = :vehicleId "
+                                + "ORDER BY t.issuedAt DESC, t.id DESC", Ticket.class)
                 .setParameter("vehicleId", vehicleId)
+                .setFirstResult(page * size)
+                .setMaxResults(size)
                 .getResultList();
+        Long total = em.createQuery(
+                        "SELECT COUNT(t) FROM Ticket t WHERE t.vehicle.id = :vehicleId", Long.class)
+                .setParameter("vehicleId", vehicleId)
+                .getSingleResult();
+        return new Page<>(items, page, size, total);
     }
 
 }

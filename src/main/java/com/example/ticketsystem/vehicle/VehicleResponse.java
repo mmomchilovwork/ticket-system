@@ -1,18 +1,16 @@
 package com.example.ticketsystem.vehicle;
 
 public class VehicleResponse {
-    private Long id;
-    private String registrationNumber;
-    private VehicleType type;
-    private int capacity;
+    private final Long id;
+    private final String registrationNumber;
+    private final VehicleType type;
+    private final int capacity;
 
-    public static VehicleResponse from(Vehicle vehicle) {
-        VehicleResponse r = new VehicleResponse();
-        r.id = vehicle.getId();
-        r.registrationNumber = vehicle.getRegistrationNumber();
-        r.type = vehicle.getType();
-        r.capacity = vehicle.getCapacity();
-        return r;
+    public VehicleResponse(Long id, String registrationNumber, VehicleType type, int capacity) {
+        this.id = id;
+        this.registrationNumber = registrationNumber;
+        this.type = type;
+        this.capacity = capacity;
     }
 
     public Long getId() { return id; }
