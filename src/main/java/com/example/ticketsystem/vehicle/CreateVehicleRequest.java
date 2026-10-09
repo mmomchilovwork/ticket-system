@@ -1,4 +1,4 @@
-package com.example.ticketsystem.venchile;
+package com.example.ticketsystem.vehicle;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

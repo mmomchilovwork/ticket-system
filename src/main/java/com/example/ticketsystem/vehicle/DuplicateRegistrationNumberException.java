@@ -1,4 +1,4 @@
-package com.example.ticketsystem.venchile;
+package com.example.ticketsystem.vehicle;
 
 import com.example.ticketsystem.common.ConflictException;
 

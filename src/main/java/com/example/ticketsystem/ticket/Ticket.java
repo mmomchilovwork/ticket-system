@@ -1,6 +1,6 @@
 package com.example.ticketsystem.ticket;
 
-import com.example.ticketsystem.venchile.Vehicle;
+import com.example.ticketsystem.vehicle.Vehicle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

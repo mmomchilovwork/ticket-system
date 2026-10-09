@@ -1,4 +1,4 @@
-package com.example.ticketsystem.venchile;
+package com.example.ticketsystem.vehicle;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

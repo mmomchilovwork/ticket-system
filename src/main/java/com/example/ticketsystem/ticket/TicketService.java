@@ -1,7 +1,7 @@
 package com.example.ticketsystem.ticket;
 
-import com.example.ticketsystem.venchile.Vehicle;
-import com.example.ticketsystem.venchile.VehicleService;
+import com.example.ticketsystem.vehicle.Vehicle;
+import com.example.ticketsystem.vehicle.VehicleService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
